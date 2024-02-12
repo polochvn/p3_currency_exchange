@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.skillbox.currency.exchange.dto.CurrencyDto;
 import ru.skillbox.currency.exchange.service.CurrencyService;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/currency")
@@ -15,6 +17,11 @@ public class CurrencyController {
     @GetMapping(value = "/{id}")
     ResponseEntity<CurrencyDto> getById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(service.getById(id));
+    }
+
+    @GetMapping
+    List<CurrencyDto> getAll() {
+        return service.getAllCurrencies();
     }
 
     @GetMapping(value = "/convert")

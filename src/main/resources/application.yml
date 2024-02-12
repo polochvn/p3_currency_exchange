@@ -21,3 +21,9 @@ spring:
         hbm2ddl:
           auto: none
 
+connection:
+  url: https://cbr.ru/scripts/XML_daily.asp
+  key-agent: User-Agent
+  value-agent: Mozilla/4.76
+
+
