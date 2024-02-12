@@ -5,7 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.skillbox.currency.exchange.config.Connection;
+import ru.skillbox.currency.exchange.dto.Currencies;
 import ru.skillbox.currency.exchange.dto.CurrencyDto;
+import ru.skillbox.currency.exchange.dto.ValuteValueDto;
 import ru.skillbox.currency.exchange.entity.Currency;
 import ru.skillbox.currency.exchange.mapper.CurrencyMapper;
 import ru.skillbox.currency.exchange.repository.CurrencyRepository;
@@ -30,15 +32,13 @@ public class CurrencyService {
     private final CurrencyRepository repository;
     private final Connection centralBankApi;
 
-    public List<CurrencyDto> getAllCurrencies() {
+    public Currencies getAllCurrencies() {
         log.info("CurrencyService method getAllCurrencies executed");
         List<Currency> currencyList = repository.findAll();
-        return currencyList.stream().map(c -> {
-            CurrencyDto currencyDto = new CurrencyDto();
-            currencyDto.setName(c.getName());
-            currencyDto.setValue(c.getValue());
-            return currencyDto;
-        }).collect(Collectors.toList());
+        return new Currencies(currencyList
+                .stream()
+                .map(c -> new ValuteValueDto(c.getName(), c.getValue()))
+                .collect(Collectors.toList()));
     }
 
     public CurrencyDto getById(Long id) {

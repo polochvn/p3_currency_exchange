@@ -3,10 +3,9 @@ package ru.skillbox.currency.exchange.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.currency.exchange.dto.Currencies;
 import ru.skillbox.currency.exchange.dto.CurrencyDto;
 import ru.skillbox.currency.exchange.service.CurrencyService;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +19,8 @@ public class CurrencyController {
     }
 
     @GetMapping
-    List<CurrencyDto> getAll() {
-        return service.getAllCurrencies();
+    ResponseEntity<Currencies> getAll() {
+        return ResponseEntity.ok(service.getAllCurrencies());
     }
 
     @GetMapping(value = "/convert")
