@@ -72,7 +72,7 @@ public class CurrencyService {
                 repository.save(currency);
             }
         });
-        connectionToCentralBankApi().disconnect();
+        closeConnection();
     }
 
     public HttpURLConnection connectionToCentralBankApi() throws Exception {
@@ -81,12 +81,18 @@ public class CurrencyService {
         http.addRequestProperty(centralBankApi.getKeyAgent(), centralBankApi.getValueAgent());
         return http;
     }
+    public void closeConnection () throws Exception {
+        if(connectionToCentralBankApi() != null) {
+            connectionToCentralBankApi().disconnect();
+        }
+    }
 
     public Valute[] getValutes() throws Exception {
         InputStream is = connectionToCentralBankApi().getInputStream();
         JAXBContext jc = JAXBContext.newInstance(ValuteCurs.class, Valute.class);
         Unmarshaller jaxbUnmarshaller = jc.createUnmarshaller();
         ValuteCurs valuteCurs = (ValuteCurs) jaxbUnmarshaller.unmarshal(is);
+        is.close();
         return valuteCurs.getValutes();
     }
 }
